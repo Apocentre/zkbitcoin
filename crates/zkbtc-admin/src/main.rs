@@ -6,7 +6,7 @@ use clap::Parser;
 use log::info;
 use std::path::PathBuf;
 use zkbitcoin_core::{
-    committee::orchestrator::{run_server, CommitteeConfig, Member},
+    committee::orchestrator::{CommitteeConfig, Member},
     constants::{ZKBITCOIN_FEE_PUBKEY, ZKBITCOIN_PUBKEY},
     frost, taproot_addr_from,
     utils::version,
@@ -137,7 +137,7 @@ async fn start_committee_node(address: Option<&str>, key_path: &str, publickey_p
         publickey_package
     };
 
-    zkbitcoin::committee::node::run_server(address, key_package, pubkey_package)
+    zkbitcoin_core::committee::node::run_server(address, key_package, pubkey_package)
         .await
         .unwrap();
 }
@@ -166,7 +166,7 @@ async fn start_orchestrator(
     // sanity check (unfortunately the publickey_package doesn't contain this info)
     assert!(committee_cfg.threshold > 0);
 
-    zkbitcoin::committee::orchestrator::run_server(address, pubkey_package, committee_cfg)
+    zkbitcoin_core::committee::orchestrator::run_server(address, pubkey_package, committee_cfg)
         .await
         .unwrap();
 }
